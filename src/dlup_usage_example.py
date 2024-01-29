@@ -18,3 +18,4 @@ with os.add_dll_directory(r"C:\Users\idris\PycharmProjects\ChangeGamersScripts\b
 import dlup
 from pathlib import Path
 
+wsi = dlup.SlideImage.from_file_path(Path("data", "core_YB_b_14", "HE_2.ome.tiff"))
