@@ -1,5 +1,5 @@
 """This script takes an image (single-channel or RGB) and writes it as pyramidal ome tiff.
-Script takes 2 arguments. An input image and an output path."""
+Script takes 3 arguments. An input image, output path and optional pixel size in µm/pixel."""
 
 import argparse
 import numpy as np
@@ -18,6 +18,7 @@ def main():
 
     parser.add_argument("input", help="Path to the first input image")
     parser.add_argument("output", help="Path to the second input image")
+    parser.add_argument("-pixelsize", help="Scale in µm per pixel. Defaults to 1.", default=1)
 
     args = parser.parse_args()
 
@@ -28,7 +29,7 @@ def main():
     
     with TiffWriter(Path(args.output), bigtiff=True) as tif:
         
-        pixelsize = 0.4990
+        pixelsize = float(args.pixelsize)
         # subifds tells the writer in advance how many lower-resolution
         # images will be associated with this image
         n_subifds = int(log2(max(image_array.shape)/256))
