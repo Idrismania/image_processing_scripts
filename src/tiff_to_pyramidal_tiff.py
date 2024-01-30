@@ -52,7 +52,7 @@ def main():
 
         options = dict(
             tile=(128, 128),
-            compression=COMPRESSION.ZSTD,
+            # compression=COMPRESSION.ZSTD,
             resolutionunit='CENTIMETER'
             )
 
