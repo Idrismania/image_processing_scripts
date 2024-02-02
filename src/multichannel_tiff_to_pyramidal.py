@@ -1,5 +1,7 @@
 """This script takes an image (single-channel or RGB) and writes it as pyramidal ome tiff.
-Script takes 3 arguments. An input image, output path and optional pixel size in µm/pixel."""
+Script takes 3 arguments. An input image, output path and optional pixel size in µm/pixel.
+
+Note that sometimes you need to adjust dimension axes, as these are not configured consistently"""
 
 import argparse
 import numpy as np
@@ -26,7 +28,11 @@ def main() -> None:
     image = imread(Path(args.input))
     image_array = np.array(image)
 
-    
+    "DELETE"
+    import os
+    masks = os.listdir(r"data\core_YB_b_14_pyramidal\masks")
+    masks = [mask.split('.')[0].split('_')[1] for mask in masks]
+
     with TiffWriter(Path(args.output), bigtiff=True) as tif:
         
         pixelsize = float(args.pixelsize)
@@ -40,6 +46,7 @@ def main() -> None:
             "PhysicalSizeXUnit": "µm",
             "PhysicalSizeY": pixelsize,
             "PhysicalSizeYUnit": "µm",
+            "Channel": {"Name": masks}
         }
 
         # Adjust the number of axes depending on image type
@@ -53,15 +60,9 @@ def main() -> None:
         options = dict(
             tile=(128, 128),
             compression=COMPRESSION.DEFLATE,
-            resolutionunit="CENTIMETER"
+            resolutionunit="CENTIMETER",
+            photometric="minisblack"
             )
-
-        if len(image_array.shape) == 2:
-            options["photometric"] = "minisblack"
-        elif len(image_array.shape) == 3:
-            options["photometric"] = "rgb"
-        else:
-            raise ValueError("Unexpected image shape. Writer only supports single-channel and RGB images")
 
         tif.write(
             image_array,
