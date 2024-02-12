@@ -42,13 +42,12 @@ dataset = TiledROIsSlideImageDataset.from_standard_tiling(
     tile_size=TILE_SIZE,
     tile_overlap=(0, 0),
     mask=mask,
-    annotations=dlup.SlideImage.from_file_path(SLIDE_PATH)
+    annotations=dlup.SlideImage.from_file_path(SLIDE_PATH).read_region
 )
 
 
 for data in dataset:
     tile = data["image"]
-
 
     plt.subplot(1, 2, 1)
     plt.imshow(tile)
