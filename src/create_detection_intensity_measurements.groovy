@@ -12,7 +12,7 @@ def measurements = ObjectMeasurements.Measurements.values() as List
 def compartments = ObjectMeasurements.Compartments.values() as List
 def downsample = 1.0
 
-for (detection in all_detections) {
+all_detections.parallelStream().forEach { detection ->
     ObjectMeasurements.addIntensityMeasurements(
       imageServer, detection, downsample, measurements, compartments
       )
