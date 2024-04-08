@@ -27,7 +27,7 @@ import qupath.opencv.ops.ImageOps
 def channelServers = []
 
 def proj = QP.getProject()
-def filename = ("prediction_image_4.ome.tif" as String)
+def filename = ("prediction_image_12.ome.tif" as String)
 def outpth = FileSystems.getDefault().getPath(proj.getPath().parent as String, filename)
 
 def imageData = QP.getCurrentImageData()
@@ -39,14 +39,16 @@ def above = getPathClass("Positive")
 def below = getPathClass("Ignore*")
 
 
-// downsample value for calculating threshold
-double thresholdDownsample = 8
+// Downsample value for calculating threshold
+// Should be increased if error "invalid scan stride" is thrown
+double thresholdDownsample = 32
 def roi = getSelectedObject()
 
+logger.info("Calculating thresholds for all channels...")
 
 // for every channel:
 for (i=0; i<channels.size(); i++) {
-    
+
     // calculate the Otsu threshold
     def threshold = autoThreshold(roi, i, thresholdDownsample)
     def classifier = qupath.opencv.ml.pixel.PixelClassifiers.createThresholdClassifier(resolution, i, threshold, below, above)
@@ -77,16 +79,16 @@ def maskImageData = new ImageData(maskServer, null, imageData.getImageType())
 
 // Define processing operations for images
 def op = ImageOps.buildImageDataOp()
-    .appendOps(ImageOps.Filters.median(2),
-               ImageOps.Core.ensureType(qupath.lib.images.servers.PixelType.UINT8))
+    .appendOps(ImageOps.Core.ensureType(qupath.lib.images.servers.PixelType.UINT8),
+               ImageOps.Filters.median(4))
 
 // Create imageServer with Median blur applied
 def serverSmooth = ImageOps.buildServer(maskImageData, op, imageData.getServer().getPixelCalibration())
 
-
+// Export should take about 3 hours when not writing pyramids
 new OMEPyramidWriter.Builder(serverSmooth)
 .region(region)
-.parallelize() // Adjust based on threads
+.parallelize(36) // Adjust based on threads
 .downsamples(maskServer.getPreferredDownsamples())
 .channelsInterleaved()
 .pixelType(PixelType.UINT8)
