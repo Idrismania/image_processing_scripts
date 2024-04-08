@@ -16,17 +16,18 @@ import qupath.lib.gui.viewer.OverlayOptions
 import qupath.lib.gui.viewer.RegionFilter
 import qupath.lib.gui.viewer.overlays.PixelClassificationOverlay
 import qupath.lib.images.servers.ColorTransforms.ColorTransform
+import qupath.lib.images.ImageData
 import qupath.opencv.ops.ImageOp
 import qupath.opencv.ops.ImageOps
 import qupath.opencv.ml.pixel.PixelClassifierTools
 import qupath.lib.images.writers.ome.OMEPyramidWriter
 import java.nio.file.FileSystems
-
+import qupath.opencv.ops.ImageOps
 
 def channelServers = []
 
 def proj = QP.getProject()
-def filename = ("prediction_image.ome.tif" as String)
+def filename = ("prediction_image_4.ome.tif" as String)
 def outpth = FileSystems.getDefault().getPath(proj.getPath().parent as String, filename)
 
 def imageData = QP.getCurrentImageData()
@@ -42,9 +43,6 @@ def below = getPathClass("Ignore*")
 double thresholdDownsample = 8
 def roi = getSelectedObject()
 
-// for channel in channels:
-//    threshold = autoThreshold(channel)
-//    thresholdValues.add threshold
 
 // for every channel:
 for (i=0; i<channels.size(); i++) {
@@ -58,16 +56,35 @@ for (i=0; i<channels.size(); i++) {
     channelServers.add(server)
 }
 
-// FROM THIS POINT I DONT KNOW HOW TO MAKE THE WRITER WRITE THE MASKS. This works, but adds the 40 mask channels
-// After the 40 regular channels. How do I initialize an empty image Server?
-def maskServer = new TransformedServerBuilder(imgServer)
+// channel IDs of only masks
+int[] maskChannels = (channels.size()..(channels.size()*2)-1).toArray()
+
+// Add classification channels to imageServer
+def preServer = new TransformedServerBuilder(imgServer)
                         .concatChannels(channelServers)
+                        .build()
+
+// Remove first half of channels, as these are not masks
+def maskServer = new TransformedServerBuilder(preServer)
+                        .extractChannels(maskChannels)
                         .build()
 
 double exportDownsample = 1
 def region = RegionRequest.createInstance(imgServer.getPath(), exportDownsample, roi.getROI())
 
-new OMEPyramidWriter.Builder(maskServer)
+// Extract mask imageData from maskServer for processing operations
+def maskImageData = new ImageData(maskServer, null, imageData.getImageType())
+
+// Define processing operations for images
+def op = ImageOps.buildImageDataOp()
+    .appendOps(ImageOps.Filters.median(2),
+               ImageOps.Core.ensureType(qupath.lib.images.servers.PixelType.UINT8))
+
+// Create imageServer with Median blur applied
+def serverSmooth = ImageOps.buildServer(maskImageData, op, imageData.getServer().getPixelCalibration())
+
+
+new OMEPyramidWriter.Builder(serverSmooth)
 .region(region)
 .parallelize() // Adjust based on threads
 .downsamples(maskServer.getPreferredDownsamples())
@@ -80,6 +97,7 @@ new OMEPyramidWriter.Builder(maskServer)
 
 print(outpth.toString())
 
+// Function that calls imageJ autothresholder to determine threshold values
 def autoThreshold(annotation, channel, thresholdDownsample) {
     def qupath = getQuPath()
     def imageData = getCurrentImageData()
