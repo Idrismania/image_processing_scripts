@@ -89,7 +89,7 @@ def serverSmooth = ImageOps.buildServer(maskImageData, op, imageData.getServer()
 new OMEPyramidWriter.Builder(serverSmooth)
 .region(region)
 .parallelize(36) // Adjust based on threads
-.downsamples(maskServer.getPreferredDownsamples())
+.downsamples(serverSmooth.getPreferredDownsamples())
 .channelsInterleaved()
 .pixelType(PixelType.UINT8)
 .compression(OMEPyramidWriter.CompressionType.LZW) // .LZW  .ZLIB   .UNCOMPRESSED
