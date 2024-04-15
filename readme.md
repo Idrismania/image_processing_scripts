@@ -1,5 +1,18 @@
 ### Image Processing Scripts
 This repository contains scripts and pipelines useful for generating data for the
-ChangeGamers project and CODEX/H&E overlaying protocols. Use the `Data/` folder to store images to load for this project.
+ChangeGamers project and CODEX/H&E overlaying protocols.
 
-All scripts can be found in the `src/` folder.
+All scripts can be found in the `scripts/` folder. To use PyVips and OpenSlide backends,
+ensure that appropriate bin files for these are included in the follow structure at the project root:
+
+<pre>
+backends/
+├─ openslide/
+│  └─ bin/
+│     ├─ filename.dll
+│     └─ filename.dll
+└─ pyvips/
+   └─ bin/
+      ├─ filename.dll
+      └─ filename.dll
+</pre>
