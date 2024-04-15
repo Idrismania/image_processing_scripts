@@ -16,3 +16,6 @@ backends/
       ├─ filename.dll
       └─ filename.dll
 </pre>
+Backends can be downloaded at:
+- Openslide:   https://openslide.org/download/
+- PyVips:      https://github.com/libvips/libvips/releases
