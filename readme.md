@@ -1,6 +1,6 @@
 ### Image Processing Scripts
-This repository contains scripts and pipelines useful for generating data for the
-ChangeGamers project and CODEX/H&E overlaying protocols.
+This repository contains scripts and pipelines useful for generating data for CODEX/H&E overlaying protocols.
+.groovy scripts are for QuPath scripting
 
 All scripts can be found in the `scripts/` folder. To use PyVips and OpenSlide backends,
 ensure that appropriate bin files for these are included in the follow structure at the project root:
