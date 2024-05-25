@@ -28,13 +28,11 @@ with os.add_dll_directory(PYVIPS_BIN_PATH):
     import pyvips
 
 import dlup
-import matplotlib.pyplot as plt
 import numpy as np
 import tifffile
 from dlup.data.dataset import TiledROIsSlideImageDataset
 from dlup.background import get_mask
 from PIL import Image, ImageDraw
-from tqdm import tqdm
 
 
 # Load H&E slide through dlup
