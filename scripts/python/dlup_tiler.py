@@ -1,4 +1,15 @@
-"""This script generates and saves an overview of your tiling settings."""
+"""
+This script takes an H&E Whole-slide image in .ome tiff format,
+corresponding multi-channel image mask in .ome.tiff format and
+output directory containg subdirectories 'he' and 'masks' as input.
+
+It will generate patches with no overlap from the WSI and export
+H&E patches and corresponding mask regions with identical index names.
+
+Script offers parameters to adjust MPP and tile size.
+
+Note that this script requires paths to Pyvips and Openslide binaries.
+"""
 
 import os
 from pathlib import Path
