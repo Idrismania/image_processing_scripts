@@ -38,13 +38,8 @@ new OMEPyramidWriter.Builder(singleChannelServer)
 // Use line below for specific downsampling
 //.downsamples(downSampling)
 .downsamples(singleChannelServer.getPreferredDownsamples())
-.pixelType(PixelType.UINT8) // Adjust based on requirement
+.pixelType(PixelType.UINT16) // Adjust based on requirement
 .compression(OMEPyramidWriter.CompressionType.DEFAULT) // .LZW  .ZLIB   .UNCOMPRESSED
 .build()
 .writePyramid(outpth as String)
 print(outpth.toString())
-
-
-
-
-
