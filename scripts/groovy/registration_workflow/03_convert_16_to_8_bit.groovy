@@ -3,6 +3,9 @@
  * to 8-bit without causing integer overflows.
  *
  * 8-bit format is necessary for Warpy registration.
+ *
+ * Note that var op includes a division by 255. This value
+ * may be adjusted to optimize the dynamic range of the data.
  * 
  * QuPath v0.5.1.
  *
