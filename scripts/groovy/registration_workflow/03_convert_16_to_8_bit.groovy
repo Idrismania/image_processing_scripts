@@ -1,6 +1,13 @@
-/*
-Run this script on a 16-bit single channel image for registration workflow
- */
+/**
+ * Script to convert previously extracted DAPI channel
+ * to 8-bit without causing integer overflows.
+ *
+ * 8-bit format is necessary for Warpy registration.
+ * 
+ * QuPath v0.5.1.
+ *
+ * @author Pete Bankhead, edited by Idris Iritas
+**/
 
 import qupath.lib.images.servers.PixelType
 import qupath.opencv.ops.ImageOps

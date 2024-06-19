@@ -1,3 +1,15 @@
+/**
+ * Simple script for exporting a single channel
+ * from multi-channel fluorescence image.
+ *
+ * Useful for extracting DAPI to use for Warpy
+ * image registration.
+ * 
+ * QuPath v0.5.1.
+ *
+ * @author Idris Iritas
+**/
+
 import qupath.lib.images.servers.ImageServer
 import qupath.lib.regions.RegionRequest
 import qupath.lib.scripting.QP

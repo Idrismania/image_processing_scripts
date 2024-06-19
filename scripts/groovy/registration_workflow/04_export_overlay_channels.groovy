@@ -1,3 +1,18 @@
+/**
+ * After Warpy registration QuPath creates a concatenated
+ * imageServer. This script allows for selecting a range
+ * of channels to export, allowing to exclude the H&E
+ * RGB channels and just exporting the fluorescence.
+ *
+ * (Images will be exported as 16-bit)
+ *
+ * (Note that channel indeces are 0-based)
+ * 
+ * QuPath v0.5.1.
+ *
+ * @author Idris Iritas
+**/
+
 import qupath.lib.color.ColorModelFactory
 import qupath.lib.images.servers.ImageServer
 import qupath.lib.regions.RegionRequest
@@ -12,9 +27,10 @@ import java.nio.file.FileSystems
 
 
 // def channelNames = getCurrentServer().getMetadata().getChannels().collect { c -> c.name }
-//setChannelNames('PDL1', 'CD8', 'FoxP3', 'CD68', 'PD1', 'CK')
+// setChannelNames('PDL1', 'CD8', 'FoxP3', 'CD68', 'PD1', 'CK')
 
 // Specify channel indexes to extract. 0-based, so if H&E is present, fluorescent channels start at index 3
+// def channelArray = (1..10) as int[] // Can be used to export a range of channels
 int[] channelArray = [3, 4, 5, 6, 7]
 
 def filename = ("WSI_registered.ome.tif" as String)
