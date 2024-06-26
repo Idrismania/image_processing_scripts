@@ -1,3 +1,15 @@
+/**
+ * Simple script for exporting a single channel
+ * from multi-channel fluorescence image.
+ *
+ * Useful for extracting DAPI to use for Warpy
+ * image registration.
+ * 
+ * QuPath v0.5.1.
+ *
+ * @author Idris Iritas
+**/
+
 import qupath.lib.images.servers.ImageServer
 import qupath.lib.regions.RegionRequest
 import qupath.lib.scripting.QP
@@ -26,13 +38,8 @@ new OMEPyramidWriter.Builder(singleChannelServer)
 // Use line below for specific downsampling
 //.downsamples(downSampling)
 .downsamples(singleChannelServer.getPreferredDownsamples())
-.pixelType(PixelType.UINT8) // Adjust based on requirement
+.pixelType(PixelType.UINT16) // Adjust based on requirement
 .compression(OMEPyramidWriter.CompressionType.DEFAULT) // .LZW  .ZLIB   .UNCOMPRESSED
 .build()
 .writePyramid(outpth as String)
 print(outpth.toString())
-
-
-
-
-

@@ -67,7 +67,7 @@ dataset = TiledROIsSlideImageDataset.from_standard_tiling(HE_FILE_PATH, TARGET_M
 mask_image = pyvips.Image.new_from_file(MASK_FILE_PATH, access="sequential")
 
 # Grab a tile produced by dlup, extract its coordinates and grab an identical tile from the mask using the coordinates
-for i, d in tqdm(enumerate(dataset, start=0)):
+for i, d in tqdm(enumerate(dataset)):
     tile = d["image"]
     tifffile.imwrite(Path(OUTPUT_PATH, "he", f"{i}.tif"), np.array(tile))
     coords = np.array(d["coordinates"])

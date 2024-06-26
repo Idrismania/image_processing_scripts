@@ -1,6 +1,14 @@
-// This script loops over every channel, calculating the optimal threshold 
-// through the Otsu method and outputs a mask for that channel. Then writes all masks
-// as a multi-channel pyramidal .ome.tiff
+/**
+ * This script allows you to set an array of thresholds,
+ * it will export an 8-bit multi-channel binary mask collection.
+ * 
+ * Images are thresholded through set thresholds and
+ * median-filtered (4x4 kernel) for denoising.
+ * 
+ * QuPath v0.5.1.
+ *
+ * @author Idris Iritas
+**/
 
 import qupath.lib.images.servers.TransformedServerBuilder
 import qupath.lib.roi.interfaces.ROI

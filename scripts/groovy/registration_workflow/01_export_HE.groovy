@@ -1,3 +1,13 @@
+/**
+ * Simple script for exporting an H&E ROI to
+ * ome.tiff. This is necessary for using Warpy
+ * image registration.
+ * 
+ * QuPath v0.5.1.
+ *
+ * @author Idris Iritas
+**/
+
 import qupath.lib.images.servers.ImageServer
 import qupath.lib.images.servers.TransformedServerBuilder
 import qupath.lib.regions.RegionRequest
